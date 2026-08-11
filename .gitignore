@@ -1,0 +1,27 @@
+# dependencies
+node_modules
+
+# build
+dist
+dist-ssr
+dev-dist
+
+# env
+.env
+.env.local
+
+# editor
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# os
+.DS_Store
+
+# logs
+*.log
+npm-debug.log*
+
+# pwa
+**/public/sw.js
+**/public/workbox-*.js
