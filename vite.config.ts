@@ -9,6 +9,21 @@ export default defineConfig({
     VitePWA({
       registerType: "autoUpdate",
       includeAssets: ["favicon.svg", "apple-touch-icon.png"],
+      workbox: {
+        globPatterns: ["**/*.{js,css,html,svg,png,ico}"],
+        runtimeCaching: [
+          {
+            urlPattern: ({ request }) =>
+              request.destination === "document" ||
+              request.destination === "script" ||
+              request.destination === "style",
+            handler: "StaleWhileRevalidate",
+            options: {
+              cacheName: "app-shell",
+            },
+          },
+        ],
+      },
       manifest: {
         name: "RideLedger",
         short_name: "RideLedger",
@@ -27,6 +42,12 @@ export default defineConfig({
             src: "icon-512.png",
             sizes: "512x512",
             type: "image/png",
+          },
+          {
+            src: "icon-maskable-512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "maskable",
           },
         ],
       },
