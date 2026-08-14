@@ -1,0 +1,109 @@
+import { UserPlus } from "lucide-react";
+import { useState } from "react";
+import { PassengerCard } from "@/components/passengers/PassengerCard";
+import { PassengerForm } from "@/components/passengers/PassengerForm";
+import { Button } from "@/components/ui/button";
+import {
+  useCreatePassenger,
+  usePassengers,
+  useSetPassengerActive,
+  useUpdatePassenger,
+} from "@/hooks/usePassengers";
+import type { PassengerFormValues } from "@/schemas/passenger.schema";
+import type { Passenger } from "@/types/entities";
+
+export function PassengersPage() {
+  const { data: passengers, isLoading, isError } = usePassengers(true);
+  const createPassenger = useCreatePassenger();
+  const updatePassenger = useUpdatePassenger();
+  const setPassengerActive = useSetPassengerActive();
+
+  const [creating, setCreating] = useState(false);
+  const [editingPassenger, setEditingPassenger] = useState<Passenger | null>(
+    null,
+  );
+  const [formError, setFormError] = useState<string | null>(null);
+
+  const formOpen = creating || editingPassenger !== null;
+  const submitting = createPassenger.isPending || updatePassenger.isPending;
+
+  async function handleSubmit(values: PassengerFormValues) {
+    setFormError(null);
+
+    try {
+      if (editingPassenger) {
+        await updatePassenger.mutateAsync({
+          id: editingPassenger.id,
+          input: values,
+        });
+      } else {
+        await createPassenger.mutateAsync(values);
+      }
+      setCreating(false);
+      setEditingPassenger(null);
+    } catch (error) {
+      setFormError(
+        error instanceof Error ? error.message : "Não foi possível salvar.",
+      );
+    }
+  }
+
+  function handleCancel() {
+    setCreating(false);
+    setEditingPassenger(null);
+    setFormError(null);
+  }
+
+  function handleToggleActive(passenger: Passenger) {
+    setPassengerActive.mutate({ id: passenger.id, active: !passenger.active });
+  }
+
+  return (
+    <div className="mx-auto max-w-lg space-y-4 p-6 pb-24">
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-semibold">Passageiros</h1>
+        {!formOpen && (
+          <Button size="sm" onClick={() => setCreating(true)}>
+            <UserPlus className="mr-2 h-4 w-4" />
+            Novo
+          </Button>
+        )}
+      </div>
+
+      {formOpen && (
+        <PassengerForm
+          initialValues={editingPassenger ?? undefined}
+          submitting={submitting}
+          errorMessage={formError}
+          onSubmit={handleSubmit}
+          onCancel={handleCancel}
+        />
+      )}
+
+      {isLoading && <p className="text-sm opacity-70">Carregando...</p>}
+
+      {isError && (
+        <p className="text-sm text-destructive">
+          Não foi possível carregar os passageiros. Tente novamente.
+        </p>
+      )}
+
+      {!isLoading && !isError && passengers?.length === 0 && (
+        <p className="text-sm opacity-70">
+          Você ainda não possui passageiros cadastrados.
+        </p>
+      )}
+
+      <div className="space-y-2">
+        {passengers?.map((passenger) => (
+          <PassengerCard
+            key={passenger.id}
+            passenger={passenger}
+            onEdit={setEditingPassenger}
+            onToggleActive={handleToggleActive}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}

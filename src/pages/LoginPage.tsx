@@ -1,6 +1,9 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { loginSchema, type LoginFormValues } from "@/schemas/auth.schema";
 import { signInWithPassword } from "@/services/auth.service";
 
@@ -35,14 +38,11 @@ export function LoginPage() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
           <div className="space-y-1">
-            <label htmlFor="email" className="text-sm font-medium">
-              E-mail
-            </label>
-            <input
+            <Label htmlFor="email">E-mail</Label>
+            <Input
               id="email"
               type="email"
               autoComplete="email"
-              className="w-full rounded-md border border-black/10 bg-white/60 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
               {...register("email")}
             />
             {errors.email && (
@@ -51,14 +51,11 @@ export function LoginPage() {
           </div>
 
           <div className="space-y-1">
-            <label htmlFor="password" className="text-sm font-medium">
-              Senha
-            </label>
-            <input
+            <Label htmlFor="password">Senha</Label>
+            <Input
               id="password"
               type="password"
               autoComplete="current-password"
-              className="w-full rounded-md border border-black/10 bg-white/60 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-ring"
               {...register("password")}
             />
             {errors.password && (
@@ -72,13 +69,9 @@ export function LoginPage() {
             <p className="text-xs text-destructive">{submitError}</p>
           )}
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full rounded-md bg-primary py-2 text-sm font-medium text-primary-foreground transition-opacity disabled:opacity-60"
-          >
+          <Button type="submit" disabled={isSubmitting} className="w-full">
             {isSubmitting ? "Entrando..." : "Entrar"}
-          </button>
+          </Button>
         </form>
       </div>
     </div>
