@@ -1,36 +1,35 @@
+import { QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { AppShell } from "@/components/layout/AppShell";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { queryClient } from "@/lib/queryClient";
 import { LoginPage } from "@/pages/LoginPage";
+import { MonthlyClosingPage } from "@/pages/MonthlyClosingPage";
+import { PassengersPage } from "@/pages/PassengersPage";
+import { RidesPage } from "@/pages/RidesPage";
 import { GuestRoute } from "@/routes/GuestRoute";
 import { ProtectedRoute } from "@/routes/ProtectedRoute";
 
-function HomePlaceholder() {
-  return (
-    <div className="flex min-h-svh items-center justify-center p-6">
-      <div className="rounded-lg bg-card p-8 text-card-foreground shadow-sm">
-        <h1 className="text-xl font-semibold">RideLedger</h1>
-        <p className="mt-2 text-sm opacity-70">
-          Login funcionando. Próximo módulo: cadastro de passageiros.
-        </p>
-      </div>
-    </div>
-  );
-}
-
 export function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route element={<GuestRoute />}>
-            <Route path="/login" element={<LoginPage />} />
-          </Route>
-          <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<HomePlaceholder />} />
-          </Route>
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route element={<GuestRoute />}>
+              <Route path="/login" element={<LoginPage />} />
+            </Route>
+            <Route element={<ProtectedRoute />}>
+              <Route element={<AppShell />}>
+                <Route path="/" element={<PassengersPage />} />
+                <Route path="/diarias" element={<RidesPage />} />
+                <Route path="/cobrancas" element={<MonthlyClosingPage />} />
+              </Route>
+            </Route>
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </BrowserRouter>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
