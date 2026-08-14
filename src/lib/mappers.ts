@@ -33,6 +33,7 @@ export function toMonthlyCharge(row: MonthlyChargeRow): MonthlyCharge {
     referenceMonth: row.reference_month,
     totalAmount: row.total_amount,
     paid: row.paid,
+    paidAmount: row.paid_amount,
     paidAt: row.paid_at,
     createdAt: row.created_at,
   };

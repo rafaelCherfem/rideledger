@@ -56,15 +56,39 @@ export async function listMonthlyCharges(
   return data.map(toMonthlyCharge);
 }
 
-export async function setMonthlyChargePaid(
+export async function markMonthlyChargePaid(
   id: string,
-  paid: boolean,
+  amount: number,
 ): Promise<MonthlyCharge> {
   const { data, error } = await supabase
     .from("monthly_charges")
     .update({
-      paid,
-      paid_at: paid ? new Date().toISOString() : null,
+      paid: true,
+      paid_amount: amount,
+      paid_at: new Date().toISOString(),
+    })
+    .eq("id", id)
+    .select("*")
+    .maybeSingle();
+
+  if (error) {
+    throw new Error(errorMessages.unexpected);
+  }
+
+  if (!data) {
+    throw new Error(errorMessages.monthlyChargeNotFound);
+  }
+
+  return toMonthlyCharge(data);
+}
+
+export async function unmarkMonthlyChargePaid(id: string): Promise<MonthlyCharge> {
+  const { data, error } = await supabase
+    .from("monthly_charges")
+    .update({
+      paid: false,
+      paid_amount: 0,
+      paid_at: null,
     })
     .eq("id", id)
     .select("*")
