@@ -3,7 +3,7 @@ export function downloadFile(
   filename: string,
   mimeType: string,
 ): void {
-  const blob = new Blob([bytes], { type: mimeType });
+  const blob = new Blob([bytes.slice()], { type: mimeType });
   const url = URL.createObjectURL(blob);
 
   const link = document.createElement("a");

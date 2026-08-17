@@ -37,6 +37,7 @@ export interface Database {
           created_at?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       rides: {
         Row: {
@@ -63,6 +64,7 @@ export interface Database {
           rate_charged?: number;
           created_at?: string;
         };
+        Relationships: [];
       };
       monthly_charges: {
         Row: {
@@ -98,7 +100,12 @@ export interface Database {
           paid_at?: string | null;
           created_at?: string;
         };
+        Relationships: [];
       };
     };
+    Views: Record<string, never>;
+    Functions: Record<string, never>;
+    Enums: Record<string, never>;
+    CompositeTypes: Record<string, never>;
   };
 }
