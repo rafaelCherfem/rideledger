@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { CarIllustration } from "@/components/illustrations/CarIllustration";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -32,47 +33,50 @@ export function LoginPage() {
 
   return (
     <div className="flex min-h-svh items-center justify-center p-6">
-      <div className="w-full max-w-sm rounded-lg bg-card p-8 text-card-foreground shadow-sm">
-        <h1 className="text-xl font-semibold">RideLedger</h1>
-        <p className="mt-1 text-sm opacity-70">Entre com sua conta.</p>
+      <div className="w-full max-w-sm">
+        <CarIllustration />
+        <div className="mt-6 rounded-lg bg-card p-8 text-card-foreground shadow-sm">
+          <h1 className="text-xl font-semibold">RideLedger</h1>
+          <p className="mt-1 text-sm opacity-70">Entre com sua conta.</p>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
-          <div className="space-y-1">
-            <Label htmlFor="email">E-mail</Label>
-            <Input
-              id="email"
-              type="email"
-              autoComplete="email"
-              {...register("email")}
-            />
-            {errors.email && (
-              <p className="text-xs text-destructive">{errors.email.message}</p>
+          <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
+            <div className="space-y-1">
+              <Label htmlFor="email">E-mail</Label>
+              <Input
+                id="email"
+                type="email"
+                autoComplete="email"
+                {...register("email")}
+              />
+              {errors.email && (
+                <p className="text-xs text-destructive">{errors.email.message}</p>
+              )}
+            </div>
+
+            <div className="space-y-1">
+              <Label htmlFor="password">Senha</Label>
+              <Input
+                id="password"
+                type="password"
+                autoComplete="current-password"
+                {...register("password")}
+              />
+              {errors.password && (
+                <p className="text-xs text-destructive">
+                  {errors.password.message}
+                </p>
+              )}
+            </div>
+
+            {submitError && (
+              <p className="text-xs text-destructive">{submitError}</p>
             )}
-          </div>
 
-          <div className="space-y-1">
-            <Label htmlFor="password">Senha</Label>
-            <Input
-              id="password"
-              type="password"
-              autoComplete="current-password"
-              {...register("password")}
-            />
-            {errors.password && (
-              <p className="text-xs text-destructive">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
-
-          {submitError && (
-            <p className="text-xs text-destructive">{submitError}</p>
-          )}
-
-          <Button type="submit" disabled={isSubmitting} className="w-full">
-            {isSubmitting ? "Entrando..." : "Entrar"}
-          </Button>
-        </form>
+            <Button type="submit" disabled={isSubmitting} className="w-full">
+              {isSubmitting ? "Entrando..." : "Entrar"}
+            </Button>
+          </form>
+        </div>
       </div>
     </div>
   );

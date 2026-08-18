@@ -10,7 +10,13 @@ if (!supabaseUrl || !supabaseAnonKey) {
   );
 }
 
-export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey);
+export const supabase = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    storage: window.localStorage,
+  },
+});
 
 export async function getCurrentUserId(): Promise<string> {
   const { data, error } = await supabase.auth.getUser();
