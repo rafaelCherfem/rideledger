@@ -102,6 +102,33 @@ export interface Database {
         };
         Relationships: [];
       };
+      received_rides: {
+        Row: {
+          id: string;
+          user_id: string;
+          passenger_id: string;
+          received_date: string;
+          amount: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          passenger_id: string;
+          received_date: string;
+          amount: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          passenger_id?: string;
+          received_date?: string;
+          amount?: number;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;

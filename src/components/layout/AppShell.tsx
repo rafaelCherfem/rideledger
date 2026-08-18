@@ -8,6 +8,7 @@ const navItems = [
   { to: "/", label: "Passageiros" },
   { to: "/diarias", label: "Diárias" },
   { to: "/cobrancas", label: "Cobranças" },
+  { to: "/compensacoes", label: "Compensações" },
 ];
 
 export function AppShell() {

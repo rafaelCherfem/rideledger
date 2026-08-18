@@ -8,6 +8,7 @@ import {
   useUnmarkMonthlyChargePaid,
 } from "@/hooks/useMonthlyCharges";
 import { usePassengers } from "@/hooks/usePassengers";
+import { useReceivedRidesByMonth } from "@/hooks/useReceivedRides";
 import { useGenerateReceipt } from "@/hooks/useReceipt";
 import { useRidesByMonth } from "@/hooks/useRides";
 import {
@@ -27,6 +28,8 @@ export function MonthlyClosingPage() {
 
   const { data: passengers } = usePassengers(true);
   const { data: rides, isLoading: loadingRides } = useRidesByMonth(referenceMonth);
+  const { data: receivedRides, isLoading: loadingReceived } =
+    useReceivedRidesByMonth(referenceMonth);
   const {
     data: charges,
     isLoading: loadingCharges,
@@ -51,7 +54,7 @@ export function MonthlyClosingPage() {
     return map;
   }, [passengers]);
 
-  const computedTotals = useMemo(() => {
+  const rideTotals = useMemo(() => {
     const totals = new Map<string, number>();
     for (const ride of rides ?? []) {
       totals.set(
@@ -61,6 +64,17 @@ export function MonthlyClosingPage() {
     }
     return totals;
   }, [rides]);
+
+  const compensationTotals = useMemo(() => {
+    const totals = new Map<string, number>();
+    for (const received of receivedRides ?? []) {
+      totals.set(
+        received.passengerId,
+        (totals.get(received.passengerId) ?? 0) + received.amount,
+      );
+    }
+    return totals;
+  }, [receivedRides]);
 
   const chargesByPassenger = useMemo(() => {
     const map = new Map<string, MonthlyCharge>();
@@ -72,11 +86,12 @@ export function MonthlyClosingPage() {
 
   const passengerIds = useMemo(() => {
     const ids = new Set<string>([
-      ...computedTotals.keys(),
+      ...rideTotals.keys(),
+      ...compensationTotals.keys(),
       ...chargesByPassenger.keys(),
     ]);
     return Array.from(ids);
-  }, [computedTotals, chargesByPassenger]);
+  }, [rideTotals, compensationTotals, chargesByPassenger]);
 
   async function handleCalculate() {
     setCalculateError(null);
@@ -175,7 +190,7 @@ export function MonthlyClosingPage() {
 
       {actionError && <p className="text-sm text-destructive">{actionError}</p>}
 
-      {(loadingRides || loadingCharges) && (
+      {(loadingRides || loadingCharges || loadingReceived) && (
         <p className="text-sm opacity-70">Carregando...</p>
       )}
 
@@ -193,7 +208,9 @@ export function MonthlyClosingPage() {
 
       <div className="space-y-2">
         {passengerIds.map((passengerId) => {
-          const computed = computedTotals.get(passengerId) ?? 0;
+          const rideAmount = rideTotals.get(passengerId) ?? 0;
+          const compensationAmount = compensationTotals.get(passengerId) ?? 0;
+          const computed = rideAmount - compensationAmount;
           const stored = chargesByPassenger.get(passengerId);
           const passenger = passengersById.get(passengerId);
           const passengerName = passenger?.name ?? "Passageiro";
@@ -205,6 +222,8 @@ export function MonthlyClosingPage() {
                 passengerName={passengerName}
                 amount={computed}
                 status="preview"
+                rideAmount={rideAmount}
+                compensationAmount={compensationAmount}
                 paidAmount={0}
                 toggling={false}
                 generatingReceipt={false}
@@ -224,6 +243,8 @@ export function MonthlyClosingPage() {
               amount={stored.totalAmount}
               status={outdated ? "outdated" : "closed"}
               computedAmount={outdated ? computed : undefined}
+              rideAmount={rideAmount}
+              compensationAmount={compensationAmount}
               paidAmount={stored.paidAmount}
               toggling={togglingId === stored.id}
               generatingReceipt={generatingId === stored.id}

@@ -8,6 +8,8 @@ interface MonthlyChargeCardProps {
   amount: number;
   status: "closed" | "preview" | "outdated";
   computedAmount?: number | undefined;
+  rideAmount: number;
+  compensationAmount: number;
   paidAmount: number;
   toggling: boolean;
   generatingReceipt: boolean;
@@ -25,6 +27,8 @@ export function MonthlyChargeCard({
   amount,
   status,
   computedAmount,
+  rideAmount,
+  compensationAmount,
   paidAmount,
   toggling,
   generatingReceipt,
@@ -35,6 +39,7 @@ export function MonthlyChargeCard({
   const remainingCents = Math.max(0, toCents(amount) - toCents(paidAmount));
   const remaining = remainingCents / 100;
   const isFullyPaid = status !== "preview" && paidAmount > 0 && remainingCents === 0;
+  const nothingOwed = amount <= 0;
 
   return (
     <div
@@ -67,40 +72,56 @@ export function MonthlyChargeCard({
 
       <p className="mt-1 text-lg font-semibold">{formatCurrency(amount)}</p>
 
-      {status === "outdated" && computedAmount !== undefined && (
+      {compensationAmount > 0 && (
         <p className="mt-1 text-xs opacity-70">
-          Diárias somam {formatCurrency(computedAmount)} — recalcule para
-          atualizar.
+          Diárias: {formatCurrency(rideAmount)} · Compensação: −
+          {formatCurrency(compensationAmount)}
         </p>
       )}
 
-      {status !== "preview" && paidAmount > 0 && !isFullyPaid && (
+      {status === "outdated" && computedAmount !== undefined && (
+        <p className="mt-1 text-xs opacity-70">
+          Total atualizado seria {formatCurrency(computedAmount)} — recalcule
+          para atualizar.
+        </p>
+      )}
+
+      {status !== "preview" && paidAmount > 0 && !isFullyPaid && !nothingOwed && (
         <p className="mt-1 text-xs opacity-70">
           Pago: {formatCurrency(paidAmount)} · Falta:{" "}
           {formatCurrency(remaining)}
         </p>
       )}
 
+      {status !== "preview" && nothingOwed && (
+        <p className="mt-1 text-xs opacity-70">
+          {amount < 0
+            ? `Compensação maior que as diárias — sobram ${formatCurrency(Math.abs(amount))} a favor dele.`
+            : "Nada a cobrar neste mês."}
+        </p>
+      )}
+
       {status !== "preview" && (
         <div className="mt-3 flex flex-wrap gap-2">
-          {isFullyPaid ? (
-            <Button
-              variant="outline"
-              size="sm"
-              disabled={toggling}
-              onClick={onUnmarkPaid}
-            >
-              {toggling ? "Atualizando..." : "Desmarcar pagamento"}
-            </Button>
-          ) : (
-            <Button size="sm" disabled={toggling} onClick={onMarkPaid}>
-              {toggling
-                ? "Atualizando..."
-                : paidAmount > 0
-                  ? `Marcar ${formatCurrency(remaining)} como pago`
-                  : "Marcar como pago"}
-            </Button>
-          )}
+          {!nothingOwed &&
+            (isFullyPaid ? (
+              <Button
+                variant="outline"
+                size="sm"
+                disabled={toggling}
+                onClick={onUnmarkPaid}
+              >
+                {toggling ? "Atualizando..." : "Desmarcar pagamento"}
+              </Button>
+            ) : (
+              <Button size="sm" disabled={toggling} onClick={onMarkPaid}>
+                {toggling
+                  ? "Atualizando..."
+                  : paidAmount > 0
+                    ? `Marcar ${formatCurrency(remaining)} como pago`
+                    : "Marcar como pago"}
+              </Button>
+            ))}
           <Button
             variant="outline"
             size="sm"

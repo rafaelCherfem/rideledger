@@ -1,8 +1,9 @@
 import type { Database } from "@/types/database";
-import type { MonthlyCharge, Passenger, Ride } from "@/types/entities";
+import type { MonthlyCharge, Passenger, ReceivedRide, Ride } from "@/types/entities";
 
 type PassengerRow = Database["public"]["Tables"]["passengers"]["Row"];
 type RideRow = Database["public"]["Tables"]["rides"]["Row"];
+type ReceivedRideRow = Database["public"]["Tables"]["received_rides"]["Row"];
 type MonthlyChargeRow = Database["public"]["Tables"]["monthly_charges"]["Row"];
 
 export function toPassenger(row: PassengerRow): Passenger {
@@ -22,6 +23,16 @@ export function toRide(row: RideRow): Ride {
     passengerId: row.passenger_id,
     rideDate: row.ride_date,
     rateCharged: row.rate_charged,
+    createdAt: row.created_at,
+  };
+}
+
+export function toReceivedRide(row: ReceivedRideRow): ReceivedRide {
+  return {
+    id: row.id,
+    passengerId: row.passenger_id,
+    receivedDate: row.received_date,
+    amount: row.amount,
     createdAt: row.created_at,
   };
 }

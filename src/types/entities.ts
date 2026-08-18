@@ -15,6 +15,14 @@ export interface Ride {
   createdAt: string;
 }
 
+export interface ReceivedRide {
+  id: string;
+  passengerId: string;
+  receivedDate: string;
+  amount: number;
+  createdAt: string;
+}
+
 export interface MonthlyCharge {
   id: string;
   passengerId: string;

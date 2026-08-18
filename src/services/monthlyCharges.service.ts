@@ -1,6 +1,7 @@
 import { errorMessages } from "@/constants/errorMessages";
 import { toMonthlyCharge } from "@/lib/mappers";
 import { getCurrentUserId, supabase } from "@/lib/supabase";
+import { listReceivedRidesByMonth } from "@/services/receivedRides.service";
 import { listRidesByMonth } from "@/services/rides.service";
 import type { MonthlyCharge } from "@/types/entities";
 
@@ -8,12 +9,19 @@ export async function calculateMonthlyCharges(
   referenceMonth: string,
 ): Promise<MonthlyCharge[]> {
   const userId = await getCurrentUserId();
-  const rides = await listRidesByMonth(referenceMonth);
+  const [rides, receivedRides] = await Promise.all([
+    listRidesByMonth(referenceMonth),
+    listReceivedRidesByMonth(referenceMonth),
+  ]);
 
   const totalsByPassenger = new Map<string, number>();
   for (const ride of rides) {
     const current = totalsByPassenger.get(ride.passengerId) ?? 0;
     totalsByPassenger.set(ride.passengerId, current + ride.rateCharged);
+  }
+  for (const received of receivedRides) {
+    const current = totalsByPassenger.get(received.passengerId) ?? 0;
+    totalsByPassenger.set(received.passengerId, current - received.amount);
   }
 
   if (totalsByPassenger.size === 0) {

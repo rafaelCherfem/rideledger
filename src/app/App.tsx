@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AppShell } from "@/components/layout/AppShell";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { queryClient } from "@/lib/queryClient";
+import { CompensationsPage } from "@/pages/CompensationsPage";
 import { LoginPage } from "@/pages/LoginPage";
 import { MonthlyClosingPage } from "@/pages/MonthlyClosingPage";
 import { PassengersPage } from "@/pages/PassengersPage";
@@ -24,6 +25,7 @@ export function App() {
                 <Route path="/" element={<PassengersPage />} />
                 <Route path="/diarias" element={<RidesPage />} />
                 <Route path="/cobrancas" element={<MonthlyClosingPage />} />
+                <Route path="/compensacoes" element={<CompensationsPage />} />
               </Route>
             </Route>
             <Route path="*" element={<Navigate to="/" replace />} />
