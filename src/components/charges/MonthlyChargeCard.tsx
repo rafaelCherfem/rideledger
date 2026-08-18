@@ -7,7 +7,7 @@ interface MonthlyChargeCardProps {
   passengerName: string;
   amount: number;
   status: "closed" | "preview" | "outdated";
-  computedAmount?: number;
+  computedAmount?: number | undefined;
   paidAmount: number;
   toggling: boolean;
   generatingReceipt: boolean;

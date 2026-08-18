@@ -8,7 +8,7 @@ import { passengerSchema, type PassengerFormValues } from "@/schemas/passenger.s
 import type { Passenger } from "@/types/entities";
 
 interface PassengerFormProps {
-  initialValues?: Passenger;
+  initialValues?: Passenger | undefined;
   submitting: boolean;
   errorMessage: string | null;
   onSubmit: (values: PassengerFormValues) => void;
