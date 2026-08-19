@@ -45,7 +45,7 @@ export function PassengerForm({
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="space-y-4 rounded-lg bg-card p-4 text-card-foreground shadow-sm"
+      className="surface space-y-4 p-4"
     >
       <div className="space-y-1">
         <Label htmlFor="name">Nome</Label>

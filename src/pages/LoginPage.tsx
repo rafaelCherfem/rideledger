@@ -32,14 +32,20 @@ export function LoginPage() {
   }
 
   return (
-    <div className="flex min-h-svh items-center justify-center p-6">
-      <div className="w-full max-w-sm">
+    <div className="relative flex min-h-svh items-center justify-center overflow-hidden p-6">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute left-1/2 top-[18%] h-72 w-72 -translate-x-1/2 rounded-full opacity-40 blur-3xl"
+        style={{ backgroundColor: "hsl(var(--card))" }}
+      />
+
+      <div className="relative w-full max-w-sm">
         <CarIllustration />
-        <div className="mt-6 rounded-lg bg-card p-8 text-card-foreground shadow-sm">
-          <h1 className="text-xl font-semibold">RideLedger</h1>
+        <div className="surface mt-8 p-8">
+          <h1 className="text-2xl font-semibold tracking-tight">RideLedger</h1>
           <p className="mt-1 text-sm opacity-70">Entre com sua conta.</p>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="mt-6 space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="mt-7 space-y-4">
             <div className="space-y-1">
               <Label htmlFor="email">E-mail</Label>
               <Input

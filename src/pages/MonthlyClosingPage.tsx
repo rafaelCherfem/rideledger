@@ -158,9 +158,9 @@ export function MonthlyClosingPage() {
 
   return (
     <div className="mx-auto max-w-lg space-y-6 p-6 pb-24">
-      <h1 className="text-xl font-semibold">Cobranças</h1>
+      <h1 className="text-2xl font-semibold tracking-tight">Cobranças</h1>
 
-      <div className="flex items-center justify-between rounded-lg bg-card p-3 text-card-foreground shadow-sm">
+      <div className="surface flex items-center justify-between p-3">
         <Button
           variant="ghost"
           size="sm"

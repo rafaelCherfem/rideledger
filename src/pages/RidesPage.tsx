@@ -76,7 +76,7 @@ export function RidesPage() {
   return (
     <div className="mx-auto max-w-lg space-y-6 p-6 pb-24">
       <div>
-        <h1 className="text-xl font-semibold">Diárias</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Diárias</h1>
         <p className="text-sm opacity-70">
           Toque no passageiro para registrar. Use a seta para ver o histórico
           do mês.

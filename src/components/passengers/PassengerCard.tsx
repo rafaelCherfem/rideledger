@@ -33,7 +33,7 @@ export function PassengerCard({
   return (
     <div
       className={cn(
-        "rounded-lg bg-card p-4 text-card-foreground shadow-sm",
+        "surface p-4",
         !passenger.active && "opacity-60",
       )}
     >

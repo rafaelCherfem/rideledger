@@ -61,7 +61,7 @@ export function PassengersPage() {
   return (
     <div className="mx-auto max-w-lg space-y-4 p-6 pb-24">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Passageiros</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Passageiros</h1>
         {!formOpen && (
           <Button size="sm" onClick={() => setCreating(true)}>
             <UserPlus className="mr-2 h-4 w-4" />

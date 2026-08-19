@@ -44,8 +44,8 @@ export function MonthlyChargeCard({
   return (
     <div
       className={cn(
-        "rounded-lg bg-card p-4 text-card-foreground shadow-sm",
-        isFullyPaid && "ring-2 ring-emerald-600/40",
+        "surface p-4",
+        isFullyPaid && "ring-2 ring-primary/50",
       )}
     >
       <div className="flex items-center justify-between gap-2">
@@ -62,7 +62,7 @@ export function MonthlyChargeCard({
             </span>
           )}
           {isFullyPaid && (
-            <span className="flex items-center gap-1 rounded-full bg-emerald-600 px-2 py-0.5 text-xs font-medium text-white">
+            <span className="flex items-center gap-1 rounded-full bg-primary px-2 py-0.5 text-xs font-medium text-primary-foreground">
               <Check className="h-3 w-3" />
               Pago
             </span>
@@ -70,7 +70,9 @@ export function MonthlyChargeCard({
         </div>
       </div>
 
-      <p className="mt-1 text-lg font-semibold">{formatCurrency(amount)}</p>
+      <p className="mt-1 text-2xl font-semibold tracking-tight">
+        {formatCurrency(amount)}
+      </p>
 
       {compensationAmount > 0 && (
         <p className="mt-1 text-xs opacity-70">

@@ -88,7 +88,7 @@ export function CompensationsPage() {
   return (
     <div className="mx-auto max-w-lg space-y-6 p-6 pb-24">
       <div>
-        <h1 className="text-xl font-semibold">Compensações</h1>
+        <h1 className="text-2xl font-semibold tracking-tight">Compensações</h1>
         <p className="text-sm opacity-70">
           Registre quando um passageiro te deu uma carona — o valor é
           abatido do que ele deve no mês.
@@ -97,7 +97,7 @@ export function CompensationsPage() {
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="space-y-4 rounded-lg bg-card p-4 text-card-foreground shadow-sm"
+        className="surface space-y-4 p-4"
       >
         <div className="space-y-1">
           <Label htmlFor="passengerId">Passageiro</Label>
@@ -175,7 +175,7 @@ export function CompensationsPage() {
         {sortedReceivedRides.map((receivedRide) => (
           <div
             key={receivedRide.id}
-            className="flex items-center justify-between rounded-lg bg-card p-3 text-card-foreground shadow-sm"
+            className="surface flex items-center justify-between p-3"
           >
             <div>
               <p className="text-sm font-medium">

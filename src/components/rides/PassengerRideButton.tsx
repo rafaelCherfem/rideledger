@@ -1,4 +1,4 @@
-import { ChevronDown, Trash2 } from "lucide-react";
+import { Check, ChevronDown, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/utils/currency";
@@ -31,7 +31,7 @@ export function PassengerRideButton({
   );
 
   return (
-    <div className="overflow-hidden rounded-lg bg-card text-card-foreground shadow-sm">
+    <div className="surface overflow-hidden">
       <div className="flex items-stretch">
         <button
           type="button"
@@ -40,7 +40,10 @@ export function PassengerRideButton({
           className="flex flex-1 items-center justify-between p-4 text-left transition-opacity disabled:opacity-70"
         >
           <span className="font-medium">{passenger.name}</span>
-          <span className="flex items-center gap-1 text-sm opacity-70">
+          <span
+            className={`flex items-center gap-1 text-sm ${registered ? "font-medium text-primary" : "opacity-70"}`}
+          >
+            {registered && <Check className="h-3.5 w-3.5" />}
             {registered
               ? "Registrado"
               : registering
