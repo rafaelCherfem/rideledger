@@ -129,9 +129,95 @@ export interface Database {
         };
         Relationships: [];
       };
+      passenger_invites: {
+        Row: {
+          id: string;
+          passenger_id: string;
+          owner_user_id: string;
+          code: string;
+          used: boolean;
+          used_by: string | null;
+          created_at: string;
+          used_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          passenger_id: string;
+          owner_user_id: string;
+          code: string;
+          used?: boolean;
+          used_by?: string | null;
+          created_at?: string;
+          used_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          passenger_id?: string;
+          owner_user_id?: string;
+          code?: string;
+          used?: boolean;
+          used_by?: string | null;
+          created_at?: string;
+          used_at?: string | null;
+        };
+        Relationships: [];
+      };
+      passenger_accounts: {
+        Row: {
+          user_id: string;
+          passenger_id: string;
+          owner_user_id: string;
+          created_at: string;
+        };
+        Insert: {
+          user_id: string;
+          passenger_id: string;
+          owner_user_id: string;
+          created_at?: string;
+        };
+        Update: {
+          user_id?: string;
+          passenger_id?: string;
+          owner_user_id?: string;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
+      ride_flags: {
+        Row: {
+          id: string;
+          ride_id: string;
+          flagged_by: string;
+          resolved: boolean;
+          resolved_at: string | null;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          ride_id: string;
+          flagged_by: string;
+          resolved?: boolean;
+          resolved_at?: string | null;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          ride_id?: string;
+          flagged_by?: string;
+          resolved?: boolean;
+          resolved_at?: string | null;
+          created_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
-    Functions: Record<string, never>;
+    Functions: {
+      redeem_passenger_invite: {
+        Args: { invite_code: string };
+        Returns: undefined;
+      };
+    };
     Enums: Record<string, never>;
     CompositeTypes: Record<string, never>;
   };

@@ -1,5 +1,6 @@
-import { Calendar, Pencil, Power, PowerOff } from "lucide-react";
+import { Calendar, KeyRound, Pencil, Power, PowerOff } from "lucide-react";
 import { useState } from "react";
+import { PassengerInvitePanel } from "@/components/passengers/PassengerInvitePanel";
 import { Button } from "@/components/ui/button";
 import { usePassengerRides } from "@/hooks/useRides";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,7 @@ export function PassengerCard({
   onToggleActive,
 }: PassengerCardProps) {
   const [historyOpen, setHistoryOpen] = useState(false);
+  const [inviteOpen, setInviteOpen] = useState(false);
   const referenceMonth = currentMonthStart();
   const { data: rides, isLoading } = usePassengerRides(
     passenger.id,
@@ -54,6 +56,14 @@ export function PassengerCard({
             aria-label="Ver histórico do mês"
           >
             <Calendar className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setInviteOpen((open) => !open)}
+            aria-label="Acesso do passageiro"
+          >
+            <KeyRound className="h-4 w-4" />
           </Button>
           <Button
             variant="ghost"
@@ -108,6 +118,8 @@ export function PassengerCard({
           )}
         </div>
       )}
+
+      {inviteOpen && <PassengerInvitePanel passengerId={passenger.id} />}
     </div>
   );
 }

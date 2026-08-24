@@ -14,6 +14,25 @@ export async function signInWithPassword(input: SignInInput): Promise<void> {
   }
 }
 
+export interface SignUpInput {
+  email: string;
+  password: string;
+}
+
+export async function signUpWithPassword(input: SignUpInput): Promise<boolean> {
+  const { data, error } = await supabase.auth.signUp(input);
+
+  if (error) {
+    throw new Error(
+      error.message.includes("already registered")
+        ? "Este e-mail já tem uma conta. Faça login em vez de cadastrar."
+        : "Não foi possível criar a conta.",
+    );
+  }
+
+  return data.session !== null;
+}
+
 export async function signOut(): Promise<void> {
   await supabase.auth.signOut();
 }

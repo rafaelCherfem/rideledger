@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   createPassenger,
+  getPassenger,
   listPassengers,
   setPassengerActive,
   updatePassenger,
@@ -14,6 +15,14 @@ export function usePassengers(includeInactive = false) {
   return useQuery({
     queryKey: [...passengersKey, { includeInactive }],
     queryFn: () => listPassengers(includeInactive),
+  });
+}
+
+export function usePassenger(id: string) {
+  return useQuery({
+    queryKey: [...passengersKey, id],
+    queryFn: () => getPassenger(id),
+    enabled: Boolean(id),
   });
 }
 

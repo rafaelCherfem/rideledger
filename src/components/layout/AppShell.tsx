@@ -1,4 +1,4 @@
-import { ArrowLeftRight, Car, LogOut, Receipt, Users } from "lucide-react";
+import { ArrowLeftRight, Car, Flag, LogOut, Receipt, Users } from "lucide-react";
 import { NavLink, Outlet } from "react-router-dom";
 import { RoadDivider } from "@/components/illustrations/RoadDivider";
 import { Button } from "@/components/ui/button";
@@ -10,6 +10,7 @@ const navItems = [
   { to: "/diarias", label: "Diárias", icon: Car },
   { to: "/cobrancas", label: "Cobranças", icon: Receipt },
   { to: "/compensacoes", label: "Compensações", icon: ArrowLeftRight },
+  { to: "/sinalizadas", label: "Sinalizadas", icon: Flag },
 ];
 
 export function AppShell() {

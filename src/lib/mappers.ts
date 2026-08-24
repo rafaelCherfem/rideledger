@@ -1,10 +1,17 @@
 import type { Database } from "@/types/database";
-import type { MonthlyCharge, Passenger, ReceivedRide, Ride } from "@/types/entities";
+import type {
+  MonthlyCharge,
+  Passenger,
+  PassengerInvite,
+  ReceivedRide,
+  Ride,
+} from "@/types/entities";
 
 type PassengerRow = Database["public"]["Tables"]["passengers"]["Row"];
 type RideRow = Database["public"]["Tables"]["rides"]["Row"];
 type ReceivedRideRow = Database["public"]["Tables"]["received_rides"]["Row"];
 type MonthlyChargeRow = Database["public"]["Tables"]["monthly_charges"]["Row"];
+type PassengerInviteRow = Database["public"]["Tables"]["passenger_invites"]["Row"];
 
 export function toPassenger(row: PassengerRow): Passenger {
   return {
@@ -33,6 +40,16 @@ export function toReceivedRide(row: ReceivedRideRow): ReceivedRide {
     passengerId: row.passenger_id,
     receivedDate: row.received_date,
     amount: row.amount,
+    createdAt: row.created_at,
+  };
+}
+
+export function toPassengerInvite(row: PassengerInviteRow): PassengerInvite {
+  return {
+    id: row.id,
+    passengerId: row.passenger_id,
+    code: row.code,
+    used: row.used,
     createdAt: row.created_at,
   };
 }

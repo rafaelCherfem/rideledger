@@ -23,6 +23,23 @@ export interface ReceivedRide {
   createdAt: string;
 }
 
+export interface PassengerInvite {
+  id: string;
+  passengerId: string;
+  code: string;
+  used: boolean;
+  createdAt: string;
+}
+
+export interface FlaggedRide {
+  flagId: string;
+  rideId: string;
+  passengerId: string;
+  rideDate: string;
+  rateCharged: number;
+  createdAt: string;
+}
+
 export interface MonthlyCharge {
   id: string;
   passengerId: string;
